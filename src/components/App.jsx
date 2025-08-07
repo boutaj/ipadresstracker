@@ -23,7 +23,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    fetch(`http://ip-api.com/json/${ip}?fields=country,city,lat,lon,timezone,isp`)
+    fetch(`https://ip-api.com/json/${ip}?fields=country,city,lat,lon,timezone,isp`)
     .then(res => res.json())
     .then(data => {
       if(Object.keys(data).length === 0 && data.constructor === Object)
