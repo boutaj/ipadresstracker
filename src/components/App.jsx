@@ -1,43 +1,44 @@
 import SearchBar from './SearchBar';
 import Map from './Map';
 import IPDetails from './IPDetails';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const App = () => {
 
-  const [ip, setIP]           = useState(null);
+  const [ip, setIP]           = useState('');
   const [data, setData]       = useState()
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://api.ipify.org?format=json')
+
+    fetch(`https://ipwho.is/${ip}`)
     .then(res => res.json())
     .then(data => {
-      setIP(data['ip'])
-      setLoading(false)
-    })
-    .catch(error => {
-      console.error("Unable to fetch IP", error)
-    });
-
-  }, [])
-
-  useEffect(() => {
-    fetch(`https://ip-api.com/json/${ip}?fields=country,city,lat,lon,timezone,isp`)
-    .then(res => res.json())
-    .then(data => {
-      if(Object.keys(data).length === 0 && data.constructor === Object)
+      
+      if(data.success === false)
+      {
         setData({
+          ip: null,
           country: 'Unknown',
           city: 'Unknown',
-          timezone: 'Unknown',
-          isp: 'Unknown',
-          lat: 0,
-          lon: 0,
+          timezone: {
+            utc: 'Unknown'
+          },
+          connection: {
+            isp: 'Unknown'
+          },
+          latitude: 0,
+          longitude: 0,
         })
+      }
       else
+      {
+        setIP(data.ip)
         setData(data)
+        setLoading(false)
+      }
     });
+
   } , [ip])
 
   if(loading)

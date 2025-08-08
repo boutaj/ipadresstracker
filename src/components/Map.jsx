@@ -24,34 +24,34 @@ function UserLocation({data})
 
     useEffect(() => {
       
-      setPosition({ lat: data['lat'], lng: data['lon'] });
-      mainMap.flyTo({ lat: data['lat'], lng: data['lon'] }, mainMap.getZoom());
+      setPosition({ lat: data.latitude, lng: data.longitude });
+      mainMap.flyTo({ lat: data.latitude, lng: data.longitude }, mainMap.getZoom());
 
     }, [data])
 
     const map = useMapEvents({
         click() {
-            setPosition({ lat: data['lat'], lng: data['lon'] });
-            map.flyTo({ lat: data['lat'], lng: data['lon'] }, map.getZoom());
+            setPosition({ lat: data.latitude, lng: data.longitude });
+            map.flyTo({ lat: data.latitude, lng: data.longitude }, map.getZoom());
         },
     });
 
     return position && (
       <Marker position={position}>
         <Popup>
-          {data['city']}, {data['country']}
+          {data.city}, {data.country}
         </Popup>
       </Marker>
     );
 }
 
-const Map = ({data, ipAdress}) => {
+const Map = ({data}) => {
 
-  if(!data || data.lat == null || data.lon == null)
+  if(!data || data.latitude == null || data.longitude == null)
     return false;
 
   return (
-    <MapContainer center={[data['lat'], data['lon']]} zoomControl={false} zoom={13} minZoom={3} className='z-10 w-full h-screen'>
+    <MapContainer center={[data.latitude, data.longitude]} zoomControl={false} zoom={13} minZoom={3} className='z-10 w-full h-screen'>
       <TileLayer attribution='IP Address Tracker' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <UserLocation data={data} />
     </MapContainer>
