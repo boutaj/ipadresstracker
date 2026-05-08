@@ -11,7 +11,7 @@ const App = () => {
 
   useEffect(() => {
 
-    fetch(`https://ipwho.is/${ip}`)
+    fetch(`https://corsproxy.io/?url=${encodeURIComponent("https://ipwho.is/" + ip)}`)
     .then(res => res.json())
     .then(data => {
       
